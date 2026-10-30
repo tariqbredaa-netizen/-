@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصتي التعليمية - Darsni Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navbar Header -->
+    <header class="w-full glass-panel sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchPage('home')">
+                <div class="w-10 h-10 rounded-xl btn-gradient flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">منصتي التعليمية</h1>
+                    <p class="text-xs text-slate-400 font-medium">منصة الدروس والواجبات التفاعلية</p>
+                </div>
+            </div>
+
+            <button onclick="openAddModal()" class="btn-gradient text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-md hover:shadow-indigo-500/20 transition flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i>
+                <span>إضافة دورة / واجب</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container with Sidebar -->
+    <div class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 flex flex-col md:flex-row gap-6">
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="glass-panel rounded-2xl p-4 sticky top-24 space-y-2">
+                <button onclick="switchPage('home')" id="nav-home" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-indigo-400 bg-indigo-950/60 border border-indigo-500/30 transition text-right">
+                    <i class="fa-solid fa-house text-lg w-6"></i>
+                    <span>الرئيسية</span>
+                </button>
+
+                <button onclick="switchPage('courses')" id="nav-courses" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-slate-400 hover:bg-slate-800/60 transition text-right">
+                    <i class="fa-solid fa-book-open text-lg w-6"></i>
+                    <span>الدورات</span>
+                </button>
+
+                <button onclick="switchPage('quizzes')" id="nav-quizzes" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-slate-400 hover:bg-slate-800/60 transition text-right">
+                    <i class="fa-solid fa-pen-to-square text-lg w-6"></i>
+                    <span>الواجبات والأسئلة</span>
+                </button>
+
+                <button onclick="switchPage('mycontent')" id="nav-mycontent" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-slate-400 hover:bg-slate-800/60 transition text-right">
+                    <i class="fa-solid fa-folder-open text-lg w-6"></i>
+                    <span>محتواي</span>
+                </button>
+
+                <button onclick="switchPage('profile')" id="nav-profile" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-slate-400 hover:bg-slate-800/60 transition text-right">
+                    <i class="fa-solid fa-user-gear text-lg w-6"></i>
+                    <span>حسابي</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content Pages -->
+        <main class="flex-grow">
+
+            <!-- 1. PAGE: HOME -->
+            <section id="page-home" class="page-content space-y-6">
+                <!-- Stats Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="glass-panel p-5 rounded-2xl flex items-center justify-between border-r-4 border-r-indigo-500">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">إجمالي الدورات المتاحة</p>
+                            <h3 id="stat-courses-count" class="text-3xl font-black text-white mt-1">0</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-indigo-900/50 text-indigo-400 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-2xl flex items-center justify-between border-r-4 border-r-purple-500">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">الأسئلة والواجبات</p>
+                            <h3 id="stat-quizzes-count" class="text-3xl font-black text-white mt-1">0</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-900/50 text-purple-400 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Latest Courses Header -->
+                <div>
+                    <h2 class="text-xl font-extrabold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-sparkles text-indigo-400"></i>
+                        أحدث الدورات الدراسية
+                    </h2>
+                    <div id="home-courses-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Dynamic Course Cards -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PAGE: COURSES -->
+            <section id="page-courses" class="page-content space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-extrabold text-white">دليل الدورات والدروس</h2>
+                </div>
+                <div id="courses-list-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Dynamic Courses -->
+                </div>
+            </section>
+
+            <!-- 3. PAGE: QUIZZES -->
+            <section id="page-quizzes" class="page-content space-y-6 hidden">
+                <h2 class="text-xl font-extrabold text-white">بنك الواجبات والتمارين التفاعلية</h2>
+                <div id="quizzes-container" class="space-y-4">
+                    <!-- Dynamic Quizzes -->
+                </div>
+            </section>
+
+            <!-- 4. PAGE: MY CONTENT -->
+            <section id="page-mycontent" class="page-content space-y-6 hidden">
+                <h2 class="text-xl font-extrabold text-white">إدارة محتواي الخص بالمنصة</h2>
+                <p class="text-sm text-slate-400">جميع الدروس والأسئلة التي أنشأتها يتم حفظها تلقائياً على جهازك.</p>
+                
+                <div class="glass-panel rounded-2xl p-6 border border-slate-700">
+                    <h3 class="font-bold text-indigo-400 mb-3">إحصائياتك الشخصية</h3>
+                    <div class="text-sm text-slate-300 space-y-2">
+                        <p>• الدورات المسجلة: <span id="my-courses-num" class="font-bold text-white">0</span></p>
+                        <p>• الأسئلة والواجبات المضافة: <span id="my-quizzes-num" class="font-bold text-white">0</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. PAGE: PROFILE -->
+            <section id="page-profile" class="page-content space-y-6 hidden">
+                <div class="glass-panel rounded-2xl p-6 text-center space-y-4">
+                    <div class="w-20 h-20 mx-auto rounded-full btn-gradient flex items-center justify-center text-white text-3xl font-bold shadow-xl">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">حساب المعلم / الطالب</h3>
+                        <span class="text-xs bg-emerald-900/60 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">نشط - مجاني 100%</span>
+                    </div>
+                    <p class="text-xs text-slate-400">يمكنك مشاركة رابط المنصة مع جميع زملائك للاستفادة من المحتوى فوراً.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ADD CONTENT MODAL -->
+    <div id="add-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-center items-center p-4 hidden">
+        <div class="glass-panel w-full max-w-lg rounded-2xl p-6 space-y-4 border border-slate-700">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                <h3 class="font-bold text-white text-lg">إضافة محتوى جديد للمنصة</h3>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <form id="content-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">نوع المحتوى</label>
+                    <select id="content-type" onchange="toggleFormInputs()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="course">دورة تدريبية جديدة</option>
+                        <option value="quiz">سؤال / واجب جديد</option>
+                    </select>
+                </div>
+
+                <!-- Course Input Fields -->
+                <div id="course-fields" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">عنوان الدورة / الدرس</label>
+                        <input type="text" id="course-title" placeholder="مثال: شرح درس الأسماء الخمسة" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">اسم المادة</label>
+                        <input type="text" id="course-subject" placeholder="مثال: اللغة العربية - النحو" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">وصف مختصر</label>
+                        <textarea id="course-desc" placeholder="اكتب ملخصاً سريعا عن الدرس..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 h-20"></textarea>
+                    </div>
+                </div>
+
+                <!-- Quiz Input Fields -->
+                <div id="quiz-fields" class="space-y-3 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">نص السؤال</label>
+                        <input type="text" id="quiz-question" placeholder="مثال: ما هي علامة رفع الأسماء الخمسة؟" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">الإجابة الصحيحة</label>
+                        <input type="text" id="quiz-answer" placeholder="مثال: الواو" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeAddModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-sm font-bold">إلغاء</button>
+                    <button type="submit" class="flex-1 btn-gradient text-white py-2.5 rounded-xl text-sm font-bold">حفظ ونشر</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Storage Data
+        let courses = JSON.parse(localStorage.getItem('my_courses') || '[]');
+        let quizzes = JSON.parse(localStorage.getItem('my_quizzes') || '[]');
+
+        // Default Initial Data if Empty
+        if (courses.length === 0) {
+            courses = [
+                { id: 1, title: 'شرح الأسماء الخمسة وإعرابها', subject: 'اللغة العربية', desc: 'درس تفاعلي لشرح شروط وإعراب الأسماء الخمسة مع الأمثلة.' }
+            ];
+            localStorage.setItem('my_courses', JSON.stringify(courses));
+        }
+
+        if (quizzes.length === 0) {
+            quizzes = [
+                { id: 1, question: 'ما علامة نصب الأسماء الخمسة؟', answer: 'الألف' }
+            ];
+            localStorage.setItem('my_quizzes', JSON.stringify(quizzes));
+        }
+
+        // Navigation Page Switcher
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+
+            // Active button styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-slate-400 hover:bg-slate-800/60 transition text-right";
+            });
+
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if (activeBtn) {
+                activeBtn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-indigo-400 bg-indigo-950/60 border border-indigo-500/30 transition text-right";
+            }
+        }
+
+        // Modal Control
+        function openAddModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+        }
+
+        function toggleFormInputs() {
+            const type = document.getElementById('content-type').value;
+            if (type === 'course') {
+                document.getElementById('course-fields').classList.remove('hidden');
+                document.getElementById('quiz-fields').classList.add('hidden');
+            } else {
+                document.getElementById('course-fields').classList.add('hidden');
+                document.getElementById('quiz-fields').classList.remove('hidden');
+            }
+        }
+
+        // Form Submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('content-type').value;
+
+            if (type === 'course') {
+                const title = document.getElementById('course-title').value;
+                const subject = document.getElementById('course-subject').value;
+                const desc = document.getElementById('course-desc').value;
+
+                if (title) {
+                    courses.push({ id: Date.now(), title, subject: subject || 'عام', desc: desc || 'لا يوجد وصف' });
+                    localStorage.setItem('my_courses', JSON.stringify(courses));
+                }
+            } else {
+                const question = document.getElementById('quiz-question').value;
+                const answer = document.getElementById('quiz-answer').value;
+
+                if (question) {
+                    quizzes.push({ id: Date.now(), question, answer: answer || 'غير محددة' });
+                    localStorage.setItem('my_quizzes', JSON.stringify(quizzes));
+                }
+            }
+
+            closeAddModal();
+            renderAllData();
+            // Clear inputs
+            document.getElementById('content-form').reset();
+        }
+
+        // Render Data in UI
+        function renderAllData() {
+            // Stats Update
+            document.getElementById('stat-courses-count').textContent = courses.length;
+            document.getElementById('stat-quizzes-count').textContent = quizzes.length;
+            document.getElementById('my-courses-num').textContent = courses.length;
+            document.getElementById('my-quizzes-num').textContent = quizzes.length;
+
+            // Courses List Render
+            const coursesHTML = courses.map(c => `
+                <div class="glass-panel p-5 rounded-2xl space-y-2 border border-slate-700/80 hover:border-indigo-500/50 transition">
+                    <span class="text-xs font-bold text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded-md border border-indigo-800">${c.subject}</span>
+                    <h3 class="font-bold text-white text-lg mt-1">${c.title}</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">${c.desc}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('home-courses-grid').innerHTML = coursesHTML;
+            document.getElementById('courses-list-grid').innerHTML = coursesHTML;
+
+            // Quizzes List Render
+            const quizzesHTML = quizzes.map((q, idx) => `
+                <div class="glass-panel p-4 rounded-xl border border-slate-700 flex flex-col gap-2">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-bold text-slate-400">سؤال #${idx + 1}</span>
+                        <span class="text-xs text-emerald-400 font-semibold bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">نشط</span>
+                    </div>
+                    <p class="font-bold text-white text-sm">${q.question}</p>
+                    <p class="text-xs text-slate-400">الإجابة الصحيحة: <span class="text-indigo-300 font-bold">${q.answer}</span></p>
+                </div>
+            `).join('');
+
+            document.getElementById('quizzes-container').innerHTML = quizzesHTML;
+        }
+
+        // Initial Load
+        renderAllData();
+    </script>
+</body>
+</html>
